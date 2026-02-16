@@ -1,5 +1,16 @@
 import { useState, useEffect, useRef } from "react";
+useEffect(() => {
+  const sendHeight = () => {
+    const height = document.documentElement.scrollHeight;
+    window.parent.postMessage(
+      { type: "setHeight", height },
+      "*"
+    );
+  };
 
+  sendHeight();
+  window.addEventListener("resize", sendHeight);
+}, []);
 // ─── FONTS ─────────────────────────────────────────────────────────────
 const fontLink = document.createElement("link");
 fontLink.href = "https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&family=Instrument+Serif:ital@0;1&display=swap";
