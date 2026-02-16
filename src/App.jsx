@@ -358,6 +358,27 @@ function CTA() {
 }
 
 export default function App() {
+ useEffect(() => {
+    const sendHeight = () => {
+      const height = document.body.scrollHeight; // Get full content height
+      window.parent.postMessage({ type: "setHeight", height }, "*");
+    };
+
+    sendHeight(); // initial height
+
+    // Update on resize
+    window.addEventListener("resize", sendHeight);
+
+    // Optional: observe dynamic content changes (like FAQ toggles)
+    const observer = new ResizeObserver(sendHeight);
+    observer.observe(document.body);
+
+    return () => {
+      window.removeEventListener("resize", sendHeight);
+      observer.disconnect();
+    };
+  }, []);
+  
   return (
     <div style={{ overflowX: "hidden" }}>
       <style>{`
